@@ -33,7 +33,7 @@ int main()
   {
     // Print out the msh prompt
     printf("msh> ");
-    //Signal handeling to kill signal ctrl+C and ctrl +Z
+    //Signal handeling to block signal ctrl+C and ctrl +Z
     sigset_t signal;
     //this will empty the sigset_t if any value is stored. 
     sigemptyset( &signal);
@@ -45,7 +45,8 @@ int main()
     sigaddset( &signal, SIGINT );
     sigaddset( &signal, SIGTSTP );
     //This will work to block the signal like ctrl c and ctrl z 
-    //So mav shell will not terminate when user enter those command. 
+    //So mav shell will not terminate when user enter those command.
+    //return 0 on sucess and -1 on error 
    if( sigprocmask( SIG_BLOCK, &signal, NULL ) < 0 )
   {
     perror("sigprocmask ");
@@ -57,11 +58,11 @@ int main()
     // inputs something since fgets returns NULL when there
     // is no input
     while (!fgets(cmd_str, MAX_COMMAND_SIZE, stdin));
-	  //If user just press return key then loop will start by 
-	  //printing the msh command again
+    //If user just press return key then loop will start by 
+    //printing the msh command again
     if (cmd_str[0] == '\n')
     {
-	  continue;
+    continue;
     }
 
     /* Parse input */
@@ -79,23 +80,23 @@ int main()
     // keep track of its original value so we can deallocate
     // the correct amount at the end
     char *working_root = working_str;
-	
-	//We are checking if user wants to run command 
-	//from the history 
+  
+  //We are checking if user wants to run command 
+  //from the history 
     if (working_root[0] == '!')
-	{
-	  int line;
-	  //Convert string value into int so that we can get
-	  //Command from the history
-	  
-	  line = atoi(&working_root[1]);	  
-	  working_str = strdup(recent_cmd[line-1]); //Subracting 1 as value is stored from 
+  {
+    int line;
+    //Convert string value into int so that we can get
+    //Command from the history
+    
+    line = atoi(&working_root[1]);	  
+    working_str = strdup(recent_cmd[line-1]); //Subracting 1 as value is stored from 
     //working_str will be the actual command line that user want enter
     //If user enter !# from the recetn command. 
     cmd_str = strndup(working_str, MAX_COMMAND_SIZE);
-	}
+  }
     //Copy of command is stored in recent command
-	  //So that we can track last 15 commands.
+    //So that we can track last 15 commands.
     if (hcount < 15)
     {
       recent_cmd[hcount] = strndup(cmd_str,MAX_COMMAND_SIZE);
@@ -103,9 +104,9 @@ int main()
     }
     else
     {
-	  //After first 15 command stored we need to 
-	  //replace the first command with the 
-	  //latest command. 
+    //After first 15 command stored we need to 
+    //replace the first command with the 
+    //latest command. 
       for (i = 0; i < 14; i++)
       {
         recent_cmd[i] = strdup(recent_cmd[i+1]);
@@ -124,10 +125,10 @@ int main()
       }
       token_count++;
     }
-	  //Checking if user want to exit from the mav shell
+    //Checking if user want to exit from the mav shell
     if (strcmp(token[0], "exit") == 0 || strcmp(token[0], "quit") == 0)
     {
-	  
+    
       exit(0);
     }
     //Command in this elseif statement handle cd
@@ -170,7 +171,7 @@ int main()
     }
     //This part of the code is to create a processor
     //Fork is used to create new processor  
-	int status;
+    int status;
     pid_t pid = fork();
     if (pid == 0)
     {
