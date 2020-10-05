@@ -157,7 +157,7 @@ int main()
     {
       for (i = 0; i < count; i++)
       {
-        printf("%d: %d\n", i + 1, pid_history[i]);
+        printf("%-2d: %d\n", i + 1, pid_history[i]);
       }
       continue;
     }
@@ -165,7 +165,7 @@ int main()
     {
       for (i = 0; i < hcount; i++)
       {
-        printf("%d: %s", i + 1, recent_cmd[i]);
+        printf("%-2d: %s", i + 1, recent_cmd[i]);
       }
       continue;
     }
