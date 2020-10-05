@@ -190,7 +190,7 @@ int main()
       process. */
       if (count < 15)
       {
-        pid_history[count] = getpid();
+        pid_history[count] = pid;
         count++;
       }
       //This will remove the first pid and store latest pid in the
@@ -201,7 +201,7 @@ int main()
         {
           pid_history[i] = pid_history[i + 1];
         }
-        pid_history[14] = getpid();
+        pid_history[14] = pid;
       }
       //Waiting until the child processor finish processing. 
       waitpid(pid,&status,0);
